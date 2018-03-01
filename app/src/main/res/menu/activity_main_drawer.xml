@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/lifecycleTest"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="Lifecycle Test" />
+    <item
+        android:id="@+id/restaurantRandomizer"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="Restaurant Randomizer" />
+    <item
+        android:id="@+id/musicPlayer"
+        android:icon="@android:drawable/ic_media_play"
+        android:title="Music Player" />
+</menu>

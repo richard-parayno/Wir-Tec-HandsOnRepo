@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.rparayno.handsonrepository.LifecycleActivity.LifecycleActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="200sp"
+        android:layout_height="27sp"
+        android:layout_marginEnd="123dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="32dp"
+        android:text="Activity Lifecycle Test"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="123dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="6dp"
+        android:text="Lifecycle Log"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="366dp"
+        android:layout_height="224dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/statisticsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                android:paddingRight="60dp"
+                android:paddingTop="0dp"
+                android:text="Statistics"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/timescalledTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingBottom="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:text="Times Called"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/timestampTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingBottom="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:text="Timestamp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onCreateTV"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:text="onCreate" />
+
+            <TextView
+                android:id="@+id/onCreateTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onCreateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onStartTV"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:text="onStart" />
+
+            <TextView
+                android:id="@+id/onStartTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onResumeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="onResume" />
+
+            <TextView
+                android:id="@+id/onResumeTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onResumeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onPauseTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="onPause" />
+
+            <TextView
+                android:id="@+id/onPauseTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onPauseTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onStopTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="onStop" />
+
+            <TextView
+                android:id="@+id/onStopTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onStopTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/onDestroyTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="onDestroy" />
+
+            <TextView
+                android:id="@+id/onDestroyTimesCalled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/onDestroyTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center" />
+        </TableRow>
+
+    </TableLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="365dp"
+        android:layout_height="248dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log is displayed here." />
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
