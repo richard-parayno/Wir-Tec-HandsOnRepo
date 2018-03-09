@@ -8,10 +8,12 @@ public class Music {
 
     private String artist;
     private String song;
+    private long id;
 
-    public Music(String artist, String song) {
+    public Music(String artist, String song, long id) {
         this.artist = artist;
         this.song = song;
+        this.id = id;
     }
 
     public String getArtist() {
@@ -28,5 +30,9 @@ public class Music {
 
     public void setSong(String song) {
         this.song = song;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -19,18 +19,28 @@ import java.util.List;
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder>{
 
     private List<Music> musicList;
+    private PlaySongListener listener;
 
-    public MusicAdapter(List<Music> musicList) {
+    public MusicAdapter(List<Music> musicList, PlaySongListener listener) {
         this.musicList = musicList;
+        this.listener = listener;
     }
 
     public class MusicViewHolder extends RecyclerView.ViewHolder{
         public TextView song, artist;
 
+
         public MusicViewHolder(View view) {
             super(view);
             song = (TextView) view.findViewById(R.id.tv_song);
             artist = (TextView) view.findViewById(R.id.tv_artist);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPlayRequest(getAdapterPosition());
+                }
+            });
 
         }
     }
@@ -38,7 +48,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
     @Override
     public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.resto_item_layout, parent, false);
+                .inflate(R.layout.music_item_layout, parent, false);
 
         return new MusicViewHolder(itemView);
     }
