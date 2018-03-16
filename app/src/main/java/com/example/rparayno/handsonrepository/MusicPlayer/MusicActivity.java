@@ -24,6 +24,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rparayno.handsonrepository.MusicPlayer.MusicService.MusicBinder;
@@ -32,7 +34,7 @@ import com.example.rparayno.handsonrepository.R;
 
 import java.util.ArrayList;
 
-public class MusicActivity extends AppCompatActivity {
+public class MusicActivity extends AppCompatActivity implements MusicController.MediaPlayerControl{
     private ArrayList<Music> musicList;
     private RecyclerView recyclerView;
     private MusicAdapter mAdapter;
@@ -42,6 +44,12 @@ public class MusicActivity extends AppCompatActivity {
     private boolean musicBound=false;
     private ServiceConnection musicConnection;
     private PlaySongListener songListener;
+
+    private MusicController musicController;
+
+    private boolean paused = false, playbackPaused = false;
+
+    private LinearLayout musicControlLayout;
 
     private TextView title;
     private TextView artist;
@@ -67,7 +75,6 @@ public class MusicActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
         }
-
         loadSongsFromStorage();
     }
 
@@ -94,23 +101,22 @@ public class MusicActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        stopService(playIntent);
-        unbindService(musicConnection);
+        this.stopService(playIntent);
+        this.unbindService(this.musicConnection);
 
-        this.musicSrv=null;
+        if (this.musicController != null) {
+            this.musicController.hide();
+            this.musicSrv = null;
+            this.musicController = null;
+            Log.d("TAG", "Music service stopped");
+        }
         super.onDestroy();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //menu item selected
-        switch (item.getItemId()) {
-            case R.id.btn_end:
-                stopService(playIntent);
-                musicSrv=null;
-                System.exit(0);
-                break;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -196,6 +202,10 @@ public class MusicActivity extends AppCompatActivity {
                     Log.d("TAG", "onPlayRequest");
                     musicSrv.setSong(songIndex);
                     musicSrv.playSong();
+                    if (playbackPaused) {
+                        setMusicController();
+                        playbackPaused = false;
+                    }
                 } else {
                     Log.e("TAG", "Music service is not properly setup");
                 }
@@ -216,7 +226,152 @@ public class MusicActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
+        musicControlLayout = (LinearLayout) findViewById(R.id.media_control_layout);
 
+        ViewTreeObserver vto = musicControlLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                setMusicController();
+            }
+        });
+    }
+
+    private void setMusicController() {
+        if (this.musicController != null) {
+            this.musicController.hide();
+            this.musicController = null;
+        }
+
+        musicController = new MusicController(this);
+        musicController.setPrevNextListeners(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playNext();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playPrev();
+            }
+        });
+
+        musicController.setMediaPlayer(this);
+        musicController.setAnchorView(findViewById(R.id.media_control_layout));
+        musicController.setEnabled(true);
+        musicController.show(0);
+    }
+
+    @Override
+    public void start() {
+        if (this.musicSrv != null)
+            musicSrv.go();
+    }
+
+    @Override
+    public void pause() {
+        if (this.musicSrv != null) {
+            playbackPaused = true;
+            musicSrv.pausePlayer();
+        }
+    }
+
+    @Override
+    public int getDuration() {
+        if (this.musicSrv != null && this.musicBound && this.musicSrv.isPng())
+            return this.musicSrv.getDur();
+        else
+            return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if (this.musicSrv != null && this.musicBound && this.musicSrv.isPng())
+            return this.musicSrv.getPosn();
+        else
+            return 0;
+    }
+
+    @Override
+    public void seekTo(int pos) {
+        if (musicSrv != null)
+            musicSrv.seek(pos);
 
     }
+
+    @Override
+    public boolean isPlaying() {
+        if (this.musicSrv != null && this.musicBound)
+            return this.musicSrv.isPng();
+        return false;
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
+    private void playNext() {
+        musicSrv.playNext();
+        if (playbackPaused) {
+            setMusicController();
+            playbackPaused = false;
+        }
+        musicController.show(0);
+    }
+
+    private void playPrev() {
+        musicSrv.playPrev();
+        if (playbackPaused) {
+            setMusicController();
+            playbackPaused = false;
+        }
+        musicController.show(0);
+    }
+
+    @Override
+    protected void onPause() {
+        this.paused = true;
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (this.paused) {
+            setMusicController();
+            paused = false;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        musicController.hide();
+
+        super.onStop();
+    }
+
+
 }

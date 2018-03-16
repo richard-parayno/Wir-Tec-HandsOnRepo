@@ -111,4 +111,46 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onPrepared(MediaPlayer mp) {
         mp.start();
     }
+
+    public int getPosn() {
+        return player.getCurrentPosition();
+    }
+
+    public int getDur() {
+        return player.getDuration();
+    }
+
+    public boolean isPng() {
+        return player.isPlaying();
+    }
+
+    public void pausePlayer() {
+        player.pause();
+    }
+
+    public void seek(int posn) {
+        player.seekTo(posn);
+    }
+
+    public void go() {
+        player.start();
+    }
+
+    public void playPrev() {
+        Log.d("TAG", "playPrev: ");
+        songPosition--;
+        if (songPosition < 0)
+            songPosition = songs.size()-1;
+        playSong();
+    }
+
+    public void playNext() {
+        Log.d("TAG", "playNext: ");
+        songPosition++;
+        if (songPosition >= songs.size())
+            songPosition = 0;
+        playSong();
+    }
+
+
 }

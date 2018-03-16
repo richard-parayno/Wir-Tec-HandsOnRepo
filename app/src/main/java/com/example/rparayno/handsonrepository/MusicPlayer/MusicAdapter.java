@@ -39,6 +39,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                 @Override
                 public void onClick(View v) {
                     listener.onPlayRequest(getAdapterPosition());
+                    listener.onPlayUpdate(getAdapterPosition());
                 }
             });
 
