@@ -77,16 +77,14 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 showExplanation("Need Permission", "We need access to your storage so I can play your music!");
-
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
             }
 
         } else {
-            // Permission has already been granted
+            loadSongsFromStorage();
         }
-        loadSongsFromStorage();
+
     }
 
     //connect to the service
@@ -149,7 +147,8 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //loadSongsFromStorage();
+                    loadSongsFromStorage();
+                    Log.d("Status: ", "called");
                     //initResources();
 
                 } else {
@@ -178,6 +177,8 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
     }
 
     private void loadSongsFromStorage() {
+        Log.d("Inside Status: ", "called");
+
         ContentResolver musicResolver = this.getContentResolver();
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
@@ -194,7 +195,7 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
                 musicList.add(new Music(thisArtist, thisTitle, thisId));
-                //mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
             } while (musicCursor.moveToNext());
         }
     }
