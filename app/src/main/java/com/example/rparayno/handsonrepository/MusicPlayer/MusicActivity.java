@@ -1,6 +1,10 @@
 package com.example.rparayno.handsonrepository.MusicPlayer;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -10,6 +14,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -28,6 +33,7 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.rparayno.handsonrepository.MainActivity;
 import com.example.rparayno.handsonrepository.MusicPlayer.MusicService.MusicBinder;
 
 import com.example.rparayno.handsonrepository.R;
@@ -51,8 +57,13 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
 
     private LinearLayout musicControlLayout;
 
+    private static final int NOTIFY_ID=1;
+
     private TextView title;
     private TextView artist;
+
+    private static final int NOTIFICATION_ID = 1;
+    private static final String NOTIFICATION_CHANNEL_ID = "music_player";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,9 +217,13 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
                         setMusicController();
                         playbackPaused = false;
                     }
+
+                    startForegroundNotification(songIndex);
                 } else {
                     Log.e("TAG", "Music service is not properly setup");
                 }
+
+
             }
 
             @Override
@@ -235,6 +250,29 @@ public class MusicActivity extends AppCompatActivity implements MusicController.
                 setMusicController();
             }
         });
+    }
+
+    private void startForegroundNotification(int songIndex) {
+        Intent notIntent = new Intent(this, MusicActivity.class);
+        notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendInt = PendingIntent.getActivity(this, 0,
+                notIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Music music = musicList.get(songIndex);
+
+        MusicPlayerNotification notification = new MusicPlayerNotification();
+
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            // Configure the notification channel.
+            notificationChannel.setDescription("Channel description");
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        musicSrv.startForeground(NOTIFY_ID, notification.buildNotification(this, music.getSong(), music.getArtist(), pendInt));
+
     }
 
     private void setMusicController() {

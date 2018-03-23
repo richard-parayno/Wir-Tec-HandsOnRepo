@@ -152,5 +152,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         playSong();
     }
 
+    public ArrayList<Music> getSongs() {
+        return songs;
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+    }
 }
